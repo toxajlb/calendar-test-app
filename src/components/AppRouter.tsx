@@ -4,7 +4,7 @@ import Login from "../pages/Login";
 import Event from "../pages/Event";
 
 const AppRouter = () => {
-  const auth = true;
+  const auth = false;
   return (
     auth
     ?
