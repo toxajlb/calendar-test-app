@@ -3,11 +3,14 @@ import { UserOutlined } from '@ant-design/icons';
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 import { RouteNames } from "../routes";
+import { useTypedSelector } from "../hooks/useTypedSelector";
+import { useActions } from "../hooks/useActions";
 
 const Navbar: FC = () => {
 
   const navigate = useNavigate();
-  const isAuth = true;
+  const { isAuth, user } = useTypedSelector(state => state.auth);
+  const { logout } = useActions();
 
   type MenuItem = Required<MenuProps>['items'][number];
 
@@ -31,7 +34,7 @@ const Navbar: FC = () => {
     getItem('Логин', '1', () => navigate(RouteNames.LOGIN), <UserOutlined />),
   ];
   const items2: MenuItem[] = [
-    getItem('Выйти', '1', () => console.log('Выйти')),
+    getItem('Выйти', '1', () => logout()),
   ];
   
   return (
@@ -41,7 +44,7 @@ const Navbar: FC = () => {
           ?
           <>
             <div style={{color: 'white'}}>
-              Username
+              {user.username}
             </div>
             <Menu theme="dark" mode="horizontal" selectable={false} items={items2} />
           </>
