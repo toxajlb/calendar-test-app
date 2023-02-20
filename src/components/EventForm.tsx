@@ -1,35 +1,69 @@
 import { Button, DatePicker, Form, Input, Row, Select, Space } from "antd";
-import { FC } from "react";
+import { Dayjs } from "dayjs";
+import { FC, useState } from "react";
+import { useTypedSelector } from "../hooks/useTypedSelector";
+import { IEvent } from "../models/IEvent";
+import { IUser } from "../models/IUser";
+import { formatDate } from "../utils/date";
 import { rules } from "../utils/rules";
 
-const EventForm: FC = () => {
+interface EventFormProps {
+  guests: IUser[];
+  submit: (event: IEvent) => void;
+}
+
+const EventForm: FC<EventFormProps> = (props) => {
+  const [event, setEvent] = useState<IEvent>({
+    author: '',
+    date: '',
+    description: '',
+    guest: ''
+  } as IEvent);
+
+  const {user} = useTypedSelector(state => state.auth);
+
+  const selectDate = (date: Dayjs | null) => {
+    if (date) {
+      setEvent({...event, date: formatDate(date.toDate())});
+    }
+  }
+
+  const submitForm = () => {
+    props.submit({...event, author: user.username});
+  }
+
   return (
-    <Form>
+    <Form onFinish={submitForm}>
       <Form.Item
         label="Описание события"
         name="description"
         rules={[rules.required()]}
       >
-        <Input />
+        <Input 
+          onChange={e => setEvent({...event, description: e.target.value})}
+          value={event.description}
+        />
       </Form.Item>
 
       <Form.Item
         label="Дата события"
         name="date"
-        rules={[rules.required()]}
+        rules={[rules.required(), rules.isDateAfter("Нельзя создать событие в прошлом")]}
       >
-        <DatePicker />
+        <DatePicker onChange={(date) => selectDate(date)}/>
       </Form.Item>
 
-      <Form.Item>
+      <Form.Item
+        label="Выберите гостя"
+        name="guest"
+        rules={[rules.required()]}
+      >
         <Space wrap>
           <Select
-            options={[
-              { value: 'jack', label: 'Jack' },
-              { value: 'lucy', label: 'Lucy' },
-              { value: 'Yiminghe', label: 'yiminghe' },
-              { value: 'disabled', label: 'Disabled', disabled: true },
-            ]}
+            options={props.guests.map(guest =>
+              ({value: guest.username, label: guest.username})
+            )}
+            onChange={(guest: string) => setEvent({...event, guest})}
           />
         </Space>
       </Form.Item>
