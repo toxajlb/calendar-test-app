@@ -15,6 +15,7 @@ const Event: FC = () => {
   useEffect(() => {
     fetchGuests();
     fetchEvents(user.username);
+    // eslint-disable-next-line
   }, []);
 
   const addNewEvent = (event: IEvent) => {

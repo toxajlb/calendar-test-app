@@ -1,4 +1,4 @@
-import { Button, DatePicker, Form, Input, Row, Select, Space } from "antd";
+import { Button, DatePicker, Form, Input, Row, Select } from "antd";
 import { Dayjs } from "dayjs";
 import { FC, useState } from "react";
 import { useTypedSelector } from "../hooks/useTypedSelector";
@@ -58,14 +58,12 @@ const EventForm: FC<EventFormProps> = (props) => {
         name="guest"
         rules={[rules.required()]}
       >
-        <Space wrap>
-          <Select
-            options={props.guests.map(guest =>
-              ({value: guest.username, label: guest.username})
-            )}
-            onChange={(guest: string) => setEvent({...event, guest})}
-          />
-        </Space>
+        <Select
+          options={props.guests.map(guest =>
+            ({value: guest.username, label: guest.username})
+          )}
+          onChange={(guest: string) => setEvent({...event, guest})}
+        />
       </Form.Item>
       
       <Row justify="end">

@@ -1,4 +1,4 @@
-import { Layout, Menu, MenuProps, Row } from "antd";
+import { Layout, Menu, MenuProps } from "antd";
 import { UserOutlined } from '@ant-design/icons';
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
@@ -34,24 +34,30 @@ const Navbar: FC = () => {
     getItem('Логин', '1', () => navigate(RouteNames.LOGIN), <UserOutlined />),
   ];
   const items2: MenuItem[] = [
-    getItem('Выйти', '1', () => logout()),
+    getItem(user.username, '1'),
+    getItem('Выйти', '2', () => logout()),
   ];
   
   return (
-    <Layout.Header>
-      <Row justify="end">
-        {isAuth
-          ?
-          <>
-            <div style={{color: 'white'}}>
-              {user.username}
-            </div>
-            <Menu theme="dark" mode="horizontal" selectable={false} items={items2} />
-          </>
-          :
-          <Menu theme="dark" mode="horizontal" selectable={false} items={items} />
-        }
-      </Row>
+    <Layout.Header >
+      {isAuth
+        ?
+        <Menu 
+          theme="dark" 
+          mode="horizontal" 
+          selectable={false} 
+          items={items2} 
+          style={{justifyContent: "end"}}
+        />
+        :
+        <Menu 
+          theme="dark" 
+          mode="horizontal" 
+          selectable={false} 
+          items={items} 
+          style={{justifyContent: "end"}}
+        />
+      }
     </Layout.Header>
   );
 }
