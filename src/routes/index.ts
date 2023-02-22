@@ -7,10 +7,8 @@ export enum RouteNames {
   EVENT = '/'
 }
 
-export const publicRoutes: IRoute[] = [
+export const publicRoutes: IRoute = 
   {path: RouteNames.LOGIN}
-]
 
-export const privateRoutes: IRoute[] = [
+export const privateRoutes: IRoute = 
   {path: RouteNames.EVENT}
-]

@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate} from "react-router-dom";
-import { privateRoutes, publicRoutes, RouteNames } from "../routes";
+import { privateRoutes, publicRoutes } from "../routes";
 import Login from "../pages/Login";
 import Event from "../pages/Event";
 import { useTypedSelector } from "../hooks/useTypedSelector";
@@ -10,17 +10,13 @@ const AppRouter = () => {
     isAuth
     ?
     <Routes>
-      {privateRoutes.map(route => 
-        <Route key={route.path} path={route.path} element={<Event />}/>  
-      )}
-      <Route path='*' element={<Navigate to={RouteNames.EVENT}/>} />
+      <Route key={privateRoutes.path} path={privateRoutes.path} element={<Event />}/>  
+      <Route path='*' element={<Navigate to={privateRoutes.path}/>} />
     </Routes>
     :
     <Routes>
-      {publicRoutes.map(route => 
-        <Route key={route.path} path={route.path} element={<Login />}/>  
-      )}
-      <Route path='*' element={<Navigate to={RouteNames.LOGIN}/>} />
+      <Route key={publicRoutes.path} path={publicRoutes.path} element={<Login />}/>  
+      <Route path='*' element={<Navigate to={publicRoutes.path}/>} />
     </Routes>
   )
 }
